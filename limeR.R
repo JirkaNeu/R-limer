@@ -17,15 +17,20 @@ fun_get_creds = function(){
   }
 }
 
+
 login = as.vector(fun_get_creds()) |> unlist()
 print_xlsx = F
+
+
+# LimeSurvey Documentation:
+# https://www.limesurvey.org/manual/RemoteControl_2_API
 
 #change the next options (website, user, password)
 options(lime_api = login[1])
 options(lime_username = login[2])
 options(lime_password = login[3])
 rm(login)
-#############################################################
+#######################################################
 
 # first get a session access key
 get_session_key()
@@ -46,36 +51,32 @@ print(survey_df)
 responses = c()
 
 for (i in 1:length(survey_df$sid)){
-  print(paste("sid:", survey_df$sid[i]))
-  
   get_responses = tryCatch({
     as.numeric(nrow(get_responses(iSurveyID = survey_df$sid[i], sLanguageCode= '', sResponseType='short')))
     },
   error = function(e) {
-    cat("Error: ", conditionMessage(e), "\n")
-    #substitute_df()
+    #cat("Error: ", conditionMessage(e), "\n")
     get_responses = 0
     },
   warning = function(w) {
-    cat("Warning: ", conditionMessage(w), "\n")
+    #cat("Warning: ", conditionMessage(w), "\n")
     get_responses = 0
     }
   )
+  print(paste("sid:", survey_df$sid[i], "|", get_responses))
   responses = append(responses, get_responses)
 }
 
 survey_df = cbind(survey_df[-2], responses = responses)
 
-
-#<<<<<<<<<<<<<<<-> writexl <->>>>>>>>>>>>>>>#
+#<<<<<<<<<<<<<-> writexl <->>>>>>>>>>>>>#
 if (print_xlsx == T){
   output_jne = "limer_jne.xlsx"
-  write_xlsx(result_df, output_jne)
+  write_xlsx(survey_df, output_jne)
 } else {
   print("No xlsx-output saved.")
 }
-#<<<<<<<<<<<<<<<->---------<->>>>>>>>>>>>>>>#
-
+#<<<<<<<<<<<<<->---------<->>>>>>>>>>>>>#
 
 #stop("release session_key")
 release_session_key()
