@@ -17,9 +17,9 @@ fun_get_creds = function(){
   }
 }
 
-
 login = as.vector(fun_get_creds()) |> unlist()
 print_xlsx = F
+
 
 
 # LimeSurvey Documentation:
@@ -81,4 +81,6 @@ if (print_xlsx == T){
 #stop("release session_key")
 release_session_key()
 
+#> 2do:
+#> charts
 
