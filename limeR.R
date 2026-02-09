@@ -21,9 +21,9 @@ login = as.vector(fun_get_creds()) |> unlist()
 print_xlsx = F
 
 
-
 # LimeSurvey Documentation:
 # https://www.limesurvey.org/manual/RemoteControl_2_API
+
 
 #change the next options (website, user, password)
 options(lime_api = login[1])
@@ -78,9 +78,14 @@ if (print_xlsx == T){
 }
 #<<<<<<<<<<<<<->---------<->>>>>>>>>>>>>#
 
-#stop("release session_key")
+
+#> Overview Methods:
+#> https://api.limesurvey.org/classes/remotecontrol-handle.html
+
+test_surv1 = get_responses(iSurveyID = 833815, sLanguageCode= '', sResponseType='short')
+test_surv2 = get_responses(iSurveyID = 833815, sLanguageCode= '', sResponseType='long')
+
+
+
+stop("release session_key")
 release_session_key()
-
-#> 2do:
-#> charts
-
